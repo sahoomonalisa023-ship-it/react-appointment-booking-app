@@ -79,7 +79,7 @@ const initialErrors = {
 };
 
 const SectionLabel = ({ children }) => (
-  <Typography variant="subtitle2" color="primary.main" sx={{ mb: 1.5 }}>
+  <Typography variant="subtitle2" sx={{ mb: 1.5, color: "primary.dark" }}>
     {children}
   </Typography>
 );
@@ -224,11 +224,20 @@ const AppointmentForm = ({ onSubmit }) => {
 
   return (
     <Card elevation={0} sx={{ borderRadius: 3, overflow: "visible" }}>
-      <Box sx={{ px: { xs: 3, md: 4 }, pt: 3.5 }}>
-        <Typography variant="subtitle2" color="secondary.dark">
+      <Box
+        sx={{
+          px: { xs: 3, md: 4 },
+          pt: 3.5,
+          pb: 2.5,
+          bgcolor: "primary.light",
+          borderBottom: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        <Typography variant="subtitle2" sx={{ color: "primary.dark" }}>
           New Booking
         </Typography>
-        <Typography variant="h5" sx={{ mt: 0.5 }}>
+        <Typography variant="h5" sx={{ mt: 0.5, color: "primary.dark" }}>
           Book an appointment
         </Typography>
       </Box>
@@ -237,6 +246,7 @@ const AppointmentForm = ({ onSubmit }) => {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <form onSubmit={handleSubmit}>
             <Stack spacing={4} sx={{ mt: 1 }}>
+              {/* Patient details */}
               <Box>
                 <SectionLabel>Patient Details</SectionLabel>
                 <Grid container spacing={2.5}>
@@ -286,6 +296,7 @@ const AppointmentForm = ({ onSubmit }) => {
 
               <Divider />
 
+              {/* Schedule */}
               <Box>
                 <SectionLabel>Schedule</SectionLabel>
                 <Grid container spacing={2.5}>
@@ -375,6 +386,7 @@ const AppointmentForm = ({ onSubmit }) => {
 
               <Divider />
 
+              {/* Visit details */}
               <Box>
                 <SectionLabel>Visit Details</SectionLabel>
                 <Grid container spacing={2.5}>
@@ -441,6 +453,7 @@ const AppointmentForm = ({ onSubmit }) => {
                 </Grid>
               </Box>
 
+              {/* Actions */}
               <Box
                 sx={{
                   display: "flex",

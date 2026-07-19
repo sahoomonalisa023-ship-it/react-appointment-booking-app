@@ -11,7 +11,7 @@ const theme = createTheme({
     },
     secondary: {
       main: "#C9622A",
-      dark: "#9C4A1E",
+      dark: "#8A3F17",
       contrastText: "#FFFFFF",
     },
     background: {
@@ -20,9 +20,9 @@ const theme = createTheme({
     },
     text: {
       primary: "#0D1B2A",
-      secondary: "#5A6C69",
+      secondary: "#3E4C49",
     },
-    divider: "#DCE3E1",
+    divider: "#CBD6D3",
     success: { main: "#2E8B57" },
     error: { main: "#C0392B" },
     warning: { main: "#B8860B" },
@@ -42,7 +42,7 @@ const theme = createTheme({
     },
     h5: {
       fontFamily: '"Sora", sans-serif',
-      fontWeight: 600,
+      fontWeight: 700,
     },
     h6: {
       fontFamily: '"Sora", sans-serif',
@@ -53,7 +53,13 @@ const theme = createTheme({
       letterSpacing: "0.09em",
       textTransform: "uppercase",
       fontSize: "0.72rem",
-      fontWeight: 600,
+      fontWeight: 700,
+    },
+    body1: {
+      color: "#0D1B2A",
+    },
+    body2: {
+      color: "#2E3B39",
     },
     button: {
       textTransform: "none",
@@ -68,8 +74,8 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           boxShadow:
-            "0 1px 2px rgba(13,27,42,0.06), 0 1px 0 rgba(13,27,42,0.04)",
-          border: "1px solid #DCE3E1",
+            "0 1px 3px rgba(13,27,42,0.08), 0 1px 0 rgba(13,27,42,0.05)",
+          border: "1px solid #CBD6D3",
           backgroundImage: "none",
         },
       },
@@ -93,6 +99,41 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           fontWeight: 600,
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: "#3E4C49",
+          fontWeight: 500,
+          "&.Mui-focused": {
+            color: "#10645C",
+          },
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          "& fieldset": {
+            borderColor: "#B7C4C1",
+          },
+          "&:hover fieldset": {
+            borderColor: "#10645C",
+          },
+        },
+        input: {
+          color: "#0D1B2A",
+          fontWeight: 500,
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          color: "#5A6C69",
+          fontWeight: 500,
         },
       },
     },
