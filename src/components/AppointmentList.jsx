@@ -1,13 +1,29 @@
-import React from 'react';
-import { Grid, Typography } from '@mui/material';
-import AppointmentCard from './AppointmentCard';
+import React from "react";
+import { Grid, Typography, Box } from "@mui/material";
+import EventBusyRoundedIcon from "@mui/icons-material/EventBusyRounded";
+import AppointmentCard from "./AppointmentCard";
 
 const AppointmentList = ({ appointments, onCancel, onUpdate }) => {
   if (appointments.length === 0) {
     return (
-      <Typography variant="h6" color="text.secondary" align="center" sx={{ py: 4 }}>
-        No appointments booked yet. Schedule your first appointment above!
-      </Typography>
+      <Box
+        sx={{
+          textAlign: "center",
+          py: 6,
+          px: 3,
+          border: "1px dashed",
+          borderColor: "divider",
+          borderRadius: 3,
+          bgcolor: "background.paper",
+        }}
+      >
+        <EventBusyRoundedIcon
+          sx={{ fontSize: 32, color: "text.secondary", mb: 1 }}
+        />
+        <Typography variant="body1" color="text.secondary">
+          No appointments booked yet. Schedule your first appointment above.
+        </Typography>
+      </Box>
     );
   }
 

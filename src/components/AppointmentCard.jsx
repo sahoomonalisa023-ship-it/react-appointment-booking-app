@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Card,
-  CardHeader,
-  CardContent,
-  CardActions,
-  Avatar,
   Typography,
   Chip,
   Button,
@@ -12,58 +8,60 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Box
-} from '@mui/material';
-import {
-  Edit,
-  Delete,
-  CalendarToday,
-  Schedule,
-  Person,
-  Phone
-} from '@mui/icons-material';
-import { deepPurple } from '@mui/material/colors';
-import EditAppointmentDialog from './EditAppointmentDialog';
-
-const getDoctorInitials = (doctorName) => {
-  return doctorName
-    .split(' ')
-    .slice(0, 2)
-    .map(name => name[0])
-    .join('')
-    .toUpperCase();
-};
+  Box,
+  Stack,
+  Divider,
+} from "@mui/material";
+import { Edit, Delete, Phone } from "@mui/icons-material";
+import EditAppointmentDialog from "./EditAppointmentDialog";
 
 const getDepartmentColor = (department) => {
   const colors = {
-    Cardiology: '#f44336',
-    Dermatology: '#4caf50',
-    Pediatrics: '#2196f3',
-    'General Medicine': '#ff9800'
+    Cardiology: "#C0392B",
+    Dermatology: "#2E8B57",
+    Pediatrics: "#2C6FB0",
+    "General Medicine": "#B8860B",
   };
-  return colors[department] || deepPurple[500];
+  return colors[department] || "#10645C";
 };
 
 const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    weekday: 'short',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
+  return new Date(dateString).toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
   });
 };
 
 const formatTime = (timeString) => {
-  return new Date(`2000-01-01T${timeString}`).toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true
+  return new Date(`2000-01-01T${timeString}`).toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
   });
 };
+
+const PunchHole = ({ top }) => (
+  <Box
+    sx={{
+      position: "absolute",
+      top,
+      left: -8,
+      width: 16,
+      height: 16,
+      borderRadius: "50%",
+      bgcolor: "background.default",
+      border: "1px solid",
+      borderColor: "divider",
+      zIndex: 1,
+    }}
+  />
+);
 
 const AppointmentCard = ({ appointment, onCancel, onUpdate }) => {
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const deptColor = getDepartmentColor(appointment.department);
 
   const handleCancel = () => {
     onCancel(appointment.id);
@@ -77,102 +75,184 @@ const AppointmentCard = ({ appointment, onCancel, onUpdate }) => {
 
   return (
     <>
-      <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: getDepartmentColor(appointment.department) }}>
-              {getDoctorInitials(appointment.doctor)}
-            </Avatar>
-          }
-          title={appointment.doctor.split(' – ')[0]}
-          subheader={appointment.department}
-          action={
-            <Chip 
-              label={appointment.status} 
-              color={appointment.status === 'Booked' ? 'primary' : 'default'}
-              size="small"
-            />
-          }
+      <Card
+        elevation={0}
+        sx={{
+          height: "100%",
+          display: "flex",
+          borderRadius: 3,
+          overflow: "visible",
+          position: "relative",
+        }}
+      >
+        <Box
+          sx={{
+            width: 6,
+            bgcolor: deptColor,
+            borderTopLeftRadius: 12,
+            borderBottomLeftRadius: 12,
+          }}
         />
-        
-        <CardContent sx={{ flexGrow: 1 }}>
-          {/* Date & Time */}
-          <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-            <CalendarToday color="action" fontSize="small" />
-            <Typography variant="body1" fontWeight="medium">
-              {formatDate(appointment.date)}
-            </Typography>
-          </Box>
-          
-          <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Schedule color="action" fontSize="small" />
-            <Typography variant="body1" fontWeight="medium">
-              {formatTime(appointment.time)}
-            </Typography>
-          </Box>
 
-          {/* Patient Info */}
-          <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Person color="action" fontSize="small" />
+        <Box
+          sx={{
+            flex: 1,
+            p: 2.5,
+            display: "flex",
+            flexDirection: "column",
+            minWidth: 0,
+          }}
+        >
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="flex-start"
+            sx={{ mb: 1.5 }}
+          >
+            <Box sx={{ minWidth: 0 }}>
+              <Typography variant="h6" noWrap sx={{ fontSize: "1.05rem" }}>
+                {appointment.doctor.split(" – ")[0]}
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ color: deptColor, fontWeight: 600 }}
+              >
+                {appointment.department}
+              </Typography>
+            </Box>
+            <Chip
+              label={appointment.status}
+              size="small"
+              sx={{
+                bgcolor:
+                  appointment.status === "Booked"
+                    ? "primary.light"
+                    : "grey.100",
+                color:
+                  appointment.status === "Booked"
+                    ? "primary.dark"
+                    : "text.secondary",
+              }}
+            />
+          </Stack>
+
+          <Stack spacing={0.75} sx={{ mb: 1.5 }}>
             <Typography variant="body2">
-              {appointment.patientName}
+              <strong>{appointment.patientName}</strong>
             </Typography>
-          </Box>
+            <Stack
+              direction="row"
+              spacing={0.75}
+              alignItems="center"
+              color="text.secondary"
+            >
+              <Phone sx={{ fontSize: 15 }} />
+              <Typography variant="body2" color="text.secondary">
+                {appointment.phoneNumber}
+              </Typography>
+            </Stack>
+            {appointment.email && (
+              <Typography variant="body2" color="text.secondary" noWrap>
+                {appointment.email}
+              </Typography>
+            )}
+          </Stack>
 
-          <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Phone color="action" fontSize="small" />
-            <Typography variant="body2">
-              {appointment.phoneNumber}
-            </Typography>
-          </Box>
-
-          {appointment.email && (
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              📧 {appointment.email}
-            </Typography>
-          )}
-
-          {/* Visit Type Chip */}
           <Chip
             label={appointment.visitType}
-            color={appointment.visitType === 'New' ? 'secondary' : 'default'}
             size="small"
-            sx={{ mb: 1 }}
+            variant="outlined"
+            color={appointment.visitType === "New" ? "secondary" : "default"}
+            sx={{ alignSelf: "flex-start", mb: appointment.symptoms ? 1.5 : 0 }}
           />
 
-          {/* Symptoms/Notes */}
           {appointment.symptoms && (
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="caption" color="text.secondary" display="block">
-                Notes:
+            <Box sx={{ mt: "auto", pt: 1 }}>
+              <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                display="block"
+              >
+                Notes
               </Typography>
-              <Typography variant="body2">
+              <Typography variant="body2" sx={{ mt: 0.25 }}>
                 {appointment.symptoms}
               </Typography>
             </Box>
           )}
-        </CardContent>
+        </Box>
 
-        <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
-          <Button
-            size="small"
-            startIcon={<Edit />}
-            onClick={() => setEditDialogOpen(true)}
-          >
-            Edit
-          </Button>
-          <Button
-            size="small"
-            startIcon={<Delete />}
-            color="error"
-            onClick={() => setCancelDialogOpen(true)}
-          >
-            Cancel
-          </Button>
-        </CardActions>
+        <Box sx={{ position: "relative", display: "flex" }}>
+          <PunchHole top={-8} />
+          <Box
+            sx={{ borderLeft: "2px dashed", borderColor: "divider", my: 2 }}
+          />
+          <PunchHole top="calc(100% - 8px)" />
+        </Box>
+
+        <Box
+          sx={{
+            width: 128,
+            flexShrink: 0,
+            p: 2,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            bgcolor: "primary.light",
+          }}
+        >
+          <Box>
+            <Typography variant="subtitle2" color="primary.dark">
+              Date
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: "0.85rem",
+                fontWeight: 600,
+                mb: 1.5,
+              }}
+            >
+              {formatDate(appointment.date)}
+            </Typography>
+            <Typography variant="subtitle2" color="primary.dark">
+              Time
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: "0.85rem",
+                fontWeight: 600,
+              }}
+            >
+              {formatTime(appointment.time)}
+            </Typography>
+          </Box>
+
+          <Divider sx={{ my: 1.5, borderColor: "rgba(16,100,92,0.2)" }} />
+
+          <Stack spacing={0.5}>
+            <Button
+              size="small"
+              startIcon={<Edit sx={{ fontSize: 16 }} />}
+              onClick={() => setEditDialogOpen(true)}
+              sx={{ justifyContent: "flex-start", minWidth: 0, px: 0.5 }}
+            >
+              Edit
+            </Button>
+            <Button
+              size="small"
+              startIcon={<Delete sx={{ fontSize: 16 }} />}
+              color="error"
+              onClick={() => setCancelDialogOpen(true)}
+              sx={{ justifyContent: "flex-start", minWidth: 0, px: 0.5 }}
+            >
+              Cancel
+            </Button>
+          </Stack>
+        </Box>
       </Card>
 
-      {/* Cancel Confirmation Dialog */}
       <Dialog
         open={cancelDialogOpen}
         onClose={() => setCancelDialogOpen(false)}
@@ -180,7 +260,8 @@ const AppointmentCard = ({ appointment, onCancel, onUpdate }) => {
         <DialogTitle>Cancel Appointment</DialogTitle>
         <DialogContent>
           <Typography>
-            Are you sure you want to cancel this appointment with {appointment.doctor}?
+            Are you sure you want to cancel this appointment with{" "}
+            {appointment.doctor}?
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -191,7 +272,6 @@ const AppointmentCard = ({ appointment, onCancel, onUpdate }) => {
         </DialogActions>
       </Dialog>
 
-      {/* Edit Appointment Dialog */}
       <EditAppointmentDialog
         open={editDialogOpen}
         onClose={() => setEditDialogOpen(false)}
